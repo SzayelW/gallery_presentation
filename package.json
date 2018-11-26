@@ -1,0 +1,29 @@
+{
+  "name": "galeria_server",
+  "version": "1.0.0",
+  "description": "backend galeria",
+  "main": "server/index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start": "node build/serverBundle.js",
+    "dev": "nodemon",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.6",
+    "webpack": "^4.26.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-middleware": "^3.4.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "nodemonConfig": {
+    "watch": "./server",
+    "ignore": ["build/"],
+    "exec": "webpack --config webpack.config.server.js && node server/build/serverBundle.js"
+  }
+}
