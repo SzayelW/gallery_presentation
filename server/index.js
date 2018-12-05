@@ -16,10 +16,13 @@ const PORT = process.env.PORT || 7771;
 mongoose.connect(keys.databaseURL,{ useNewUrlParser: true });
 
 app.use(bodyParser.json());
-console.log(keys.cookieSessionKey);
 app.use(
-    cookieSession({name:'localcookie777',maxAge: 40 * 24 * 60 * 60 * 1000, keys: [keys.cookieSessionKey]})
-    );
+    cookieSession({
+        name:'localcookie777',
+        maxAge: 40 * 24 * 60 * 60 * 1000,
+        keys: [keys.cookieSessionKey]
+    })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
