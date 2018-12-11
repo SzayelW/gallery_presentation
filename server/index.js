@@ -27,12 +27,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes')(app);
+require('./routes/galeriaRoutes')(app);
 
+
+app.use(express.static(path.resolve("uploads")));
 app.use(express.static(path.resolve("client","build")));
-
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve("client", "build", "index.html"));
-  });
+    if(req.url.match('/uploads/users/')){
+        const file = req.url.split('/').filter(r => r.trim()).reverse();
+        if(file.length === 4) res.sendFile(path.resolve("uploads", "users", file[1], file[0] ));
+        else res.status(404).send('Not found');
+    }else{
+        res.sendFile(path.resolve("client", "build", "index.html"));
+    }
+});
 
 app.listen(PORT, ()=>{
     console.log(`app listening on port: ${PORT} ${process.env.NODE_ENV}`);
