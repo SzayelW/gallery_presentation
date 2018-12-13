@@ -25,9 +25,10 @@ class App extends React.Component{
                 <Switch>
                     <Route path="/login" component={LoginForm} />
                     <Route path="/usuarios" component={Usuarios} />
-                    <Route exact path="/mis_galerias" component={Galerias} />
                     <Route exact path="/mis_galerias/nuevo" component={GaleriaForm} />
-                    <Route path="/" component={Home} />
+                    <Route path="/mis_galerias/:id" component={Galerias} />
+                    <Route path="/mis_galerias" component={Galerias} />
+                    <Route exact path="/" component={Home} />
                 </Switch>
             </ React.Fragment>
         </BrowserRouter>

@@ -22,6 +22,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage});
 
 module.exports = (app) =>{
+    
     app.post('/api/galeria/nuevo', upload.array('imagenes'), async (req, res)=> {
         const { nombre, descripcion} = req.body;
         
@@ -31,7 +32,26 @@ module.exports = (app) =>{
         }else{
             res.send('sin archivo');
         }
-        const galeriaNueva = await new GaleriasModel({ nombre, descripcion, usuarioId: req.user.id, imagenes });
+        const galeriaNueva = await new GaleriasModel({ nombre, descripcion, usuarioId: req.user.id, imagenes }).save();
         res.send(galeriaNueva);
+    });
+
+    app.get('/galerias_usuario', async (req, res) => {
+       const galeriasUsuario = await GaleriasModel.find({usuarioId: req.user.id});
+       res.send(galeriasUsuario); 
+    });
+
+    app.post('/galerias_usuario/set_activa', async (req, res) => {
+        const { galeriaId, activa } = req.body;
+        let galeriaActiva = {};
+        try{
+            if(activa){
+                await GaleriasModel.findOneAndUpdate({usuarioId: req.user.id, activa: true},{$set: {activa: false}}).exec();
+            }
+            galeriaActiva = await GaleriasModel.findByIdAndUpdate(galeriaId, { $set: {activa: activa} }, {new: true}).exec();
+        }catch(e){
+            console.log(e);
+        }
+        res.send(galeriaActiva);
     });
 }

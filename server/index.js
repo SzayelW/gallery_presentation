@@ -35,7 +35,7 @@ app.use(express.static(path.resolve("client","build")));
 app.get("*", (req, res) => {
     if(req.url.match('/uploads/users/')){
         const file = req.url.split('/').filter(r => r.trim()).reverse();
-        if(file.length === 4) res.sendFile(path.resolve("uploads", "users", file[1], file[0] ));
+        if(file.length >= 4) res.sendFile(path.resolve("uploads", "users", file[1], file[0] ));
         else res.status(404).send('Not found');
     }else{
         res.sendFile(path.resolve("client", "build", "index.html"));
