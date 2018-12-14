@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import axios from 'axios';
-import ImageUpload from './ImageUpload';
+import { connect } from 'react-redux';
+import { postNuevaGaleriaUsuario } from '../actions';
 
 class GaleriaForm extends Component {
     state = {
@@ -10,10 +10,7 @@ class GaleriaForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({uploading: true});
-        axios
-            .post('/api/galeria/nuevo', new FormData(this.refs.galeriaForm))
-            .then(res => { console.log(res); this.props.history.push("/mis_galerias"); })
-            .catch(e => console.log(e));
+        this.props.postNuevaGaleriaUsuario(new FormData(this.refs.galeriaForm), this.props.history);           
     }
     
     componentWillUnmount(){
@@ -40,4 +37,4 @@ class GaleriaForm extends Component {
     }
 }
 
-export default GaleriaForm;
+export default connect(null, {postNuevaGaleriaUsuario})(GaleriaForm);

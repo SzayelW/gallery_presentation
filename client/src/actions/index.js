@@ -7,16 +7,24 @@ export const fecthUser = () => async dispatch => {
     dispatch({ type: FETCH_USER, payload: user.data});
 }
 
-export const login = (datos, history) => async dispatch => {
+export const login = (datos, history, next) => async dispatch => {
     const user = await axios.post('/api/login', datos);
     if(user){
         history.push("/");
     }
     dispatch({ type: FETCH_USER, payload: user.data});
+    next();
 }
 
 export const fetchGaleriasUsuario = () => async dispatch => {
     const galerias = await axios.get('/galerias_usuario');
+    dispatch({ type: FETCH_GALERIAS_USER , payload: galerias.data});
+}
+
+export const postNuevaGaleriaUsuario = (datos, history) => async dispatch => {
+    await axios.post('/api/galeria/nuevo', datos);
+    const galerias = await axios.get('/galerias_usuario');
+    history.push('/mis_galerias');
     dispatch({ type: FETCH_GALERIAS_USER , payload: galerias.data});
 }
 

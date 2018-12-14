@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { login } from '../actions';
+import { login, fetchGaleriasUsuario } from '../actions';
 
 class LoginForm extends React.Component{
 
@@ -11,7 +11,8 @@ class LoginForm extends React.Component{
                 username: this.refs.username.value,
                 password: this.refs.password.value
             },
-            this.props.history
+            this.props.history,
+            this.props.fetchGaleriasUsuario
             );
     }
 
@@ -38,4 +39,4 @@ class LoginForm extends React.Component{
     }
 }
 
-export default connect(null, { login } )(LoginForm);
+export default connect(null, { login, fetchGaleriasUsuario } )(LoginForm);
