@@ -6,9 +6,6 @@ import GaleriaMin from './GaleriaMin';
 import GaleriaView from './GaleriaView';
 
 class Galerias extends Component {
-    componentDidMount(){
-        this.props.fetchGaleriasUsuario();
-    }
 
     setGaleriaActiva = (activa,galeriaId) => {
         this.props.setGaleriaActivaUsuario(galeriaId, activa);

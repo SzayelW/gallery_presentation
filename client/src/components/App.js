@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, BrowserRouter, Switch} from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fecthUser} from '../actions';
+import { fecthUser, fetchGaleriasUsuario} from '../actions';
 
 import LoginForm from './LoginForm';
 import Home from './Home';
@@ -15,6 +15,7 @@ class App extends React.Component{
     
     componentDidMount(){
         this.props.fecthUser();
+        this.props.fetchGaleriasUsuario();
     }
 
     render() {
@@ -36,5 +37,5 @@ class App extends React.Component{
     }
 }
 
-export default connect(null, {fecthUser})(App);
+export default connect(null, {fecthUser, fetchGaleriasUsuario})(App);
 
