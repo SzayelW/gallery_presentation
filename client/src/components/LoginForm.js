@@ -20,13 +20,13 @@ class LoginForm extends React.Component{
         return (
             <React.Fragment>
                 <form className="col s12" onSubmit={this.handleSubmit}>
-                    <div className="row">                  
+                    <div className="row" key={1}>                  
                         <div className="col offset-s1 s10">
                             <label>Username</label>
                             <input type="text" ref="username" name="username"/>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row" key={2}>
                         <div className="col offset-s1 s10">
                             <label >Password</label>
                             <input type="password" ref="password" name="password"/>
