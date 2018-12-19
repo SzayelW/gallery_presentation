@@ -1,25 +1,22 @@
 import React, { Component, Fragment} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchGaleriasUsuario, setGaleriaActivaUsuario } from '../actions';
+import { fetchGaleriasUsuario, setGaleriaActivaUsuario, eliminarGaleria } from '../actions';
 import GaleriaMin from './GaleriaMin';
 import GaleriaView from './GaleriaView';
+import Axios from 'axios';
 
 class Galerias extends Component {
 
-    setGaleriaActiva = (activa,galeriaId) => {
-        this.props.setGaleriaActivaUsuario(galeriaId, activa);
-    }
-    
     render(){
         const galeriasRuta = '/mis_galerias';
         const { location, match } = this.props;
         let render = [];
         if(location.pathname === galeriasRuta){
-            render = this.props.galeriasUsuario.map(g => <GaleriaMin setGaleriaActiva={this.setGaleriaActiva} galeria={g} key={g.id} />);
+            render = this.props.galeriasUsuario.map(g => <GaleriaMin {...this.props} galeria={g} key={g.id} />);
         }else if(match.params.id){
             const viewGaleria = this.props.galeriasUsuario.filter( g => g._id === match.params.id)[0];
-            render = <GaleriaView galeria={viewGaleria} setGaleriaActiva={this.setGaleriaActiva} />
+            render = <GaleriaView {...this.props } galeria={viewGaleria}/>
         }
 
         return (
@@ -43,4 +40,4 @@ function mapStateToProps({galeriasUsuario}){
     return {galeriasUsuario};
 }
 
-export default connect(mapStateToProps, { fetchGaleriasUsuario, setGaleriaActivaUsuario})(Galerias);
+export default connect(mapStateToProps, { fetchGaleriasUsuario, setGaleriaActivaUsuario, eliminarGaleria})(Galerias);

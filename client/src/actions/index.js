@@ -2,6 +2,7 @@ import axios from 'axios';
 export const FETCH_USER = 'FETCH_USER';
 export const FETCH_GALERIAS_USER = 'FETCH_GALERIAS_USER';
 export const NUEVA_GALERIA = 'NUEVA_GALERIA';
+export const ELIMINA_GALERIA = 'ELIMINA_GALERIA';
 
 export const fecthUser = () => async dispatch => {
     const user = await axios.get('/api/current_user');
@@ -33,3 +34,9 @@ export const setGaleriaActivaUsuario = (galeriaId, activa) => async dispatch => 
     const galerias = await axios.get('/galerias_usuario');
     dispatch({ type: FETCH_GALERIAS_USER , payload: galerias.data});
 }
+
+export const eliminarGaleria = (galeriaId, history) => async dispatch => {
+    const eliminado = await axios.delete('/galerias_usuario/eliminar', {data: {galeriaId}});
+    if(history) history.push('/mis_galerias');
+    dispatch({ type: ELIMINA_GALERIA , payload: eliminado.data });
+};

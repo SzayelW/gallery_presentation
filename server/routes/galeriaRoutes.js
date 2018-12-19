@@ -54,4 +54,15 @@ module.exports = (app) =>{
         }
         res.send(galeriaActiva);
     });
+
+    app.delete('/galerias_usuario/eliminar', async (req, res) => {
+        try{
+            await GaleriasModel.findByIdAndDelete(req.body.galeriaId, (err, doc)=>{
+                if(!err) return res.send(doc);
+            }).exec();
+        }catch(e){
+            console.log(e);
+        }
+        res.send(null);
+    });
 }
