@@ -14,7 +14,7 @@ class GaleriaView extends Component {
                     </label>
                 </div>
                 <p>{galeria.descripcion}</p>
-                { ImagenDiv(galeria.imagenes) }
+                <ImagenDiv imagenes={galeria.imagenes} />
             </div>
         );
     }

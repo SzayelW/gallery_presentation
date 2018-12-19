@@ -10,13 +10,13 @@ class Home extends Component {
         
         return (
             <React.Fragment>
-                { galeriaActiva && <Carousel imagenes={galeriaActiva.imagenes} tiempo={ 5000 } /> }
+                { galeriaActiva && <Carousel imagenes={galeriaActiva.imagenes} tiempo={ 10000 } /> }
                 <div className="row">
                     <h1>Galeria: {galeriaActiva ? galeriaActiva.nombre : 'Sin galeria Activa' }</h1>
                     <p> {galeriaActiva ? galeriaActiva.descripcion : '' }</p>
                 </div>
                 <div className="row">
-                    { (galeriaActiva && galeriaActiva.imagenes) && ImagenDiv(galeriaActiva.imagenes) }
+                    { (galeriaActiva && galeriaActiva.imagenes) && <ImagenDiv imagenes={ galeriaActiva.imagenes } /> }
                 </div>                
             </ React.Fragment>
         );

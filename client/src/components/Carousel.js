@@ -30,9 +30,10 @@ export default class Carousel extends Component{
 
     manejaPantallaCompleta = () =>{
         this.destruyeCarousel(window.instanceCarousel);
-        pantallaCompleta.manejaPantallaCompleta('.carousel');
         window.instanceCarousel = M.Carousel.init(window.carouselElem,{fullWidth: true, duration: 500});
+        window.instanceCarousel.set(1);
         this.manejaTiempoCarousel(window.instanceCarousel, this.props.tiempo);
+        pantallaCompleta.manejaPantallaCompleta('.carousel');                
     }
 
     componentWillUnmount(){
@@ -42,14 +43,14 @@ export default class Carousel extends Component{
     render(){
         return (
             <React.Fragment>
-            <button onClick={this.manejaPantallaCompleta}>
-                Iniciar modo presentación
-            </button>
-            <div className="carousel carousel-slider">
-                { this.props.imagenes && this.props.imagenes.map((el, idx) => (
-                    <a className="carousel-item" href={'#'+idx} ><img src={el.ruta} /></a>
-                )) }
-            </div>
+                <div className="carousel carousel-slider">
+                    { this.props.imagenes && this.props.imagenes.map((el, idx) => (
+                        <a className="carousel-item" href={'#'+idx} ><img src={el.ruta} /></a>
+                    )) }
+                </div>
+                <button className="waves-effect waves-light btn right"onClick={this.manejaPantallaCompleta}>
+                    Iniciar modo presentación
+                </button>
             </React.Fragment>
         );
     }
