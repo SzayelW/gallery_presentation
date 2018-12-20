@@ -1,5 +1,11 @@
 #root{
-    /*max-width: 900px;*/
     margin: 0px auto;
     padding: 15px;
+}
+.img_presentacion{
+    height: 100%;
+    object-fit: cover;
+}
+.carousel:fullscreen .img_presentacion{
+    object-fit: contain;
 }

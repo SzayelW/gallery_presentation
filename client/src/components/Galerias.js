@@ -16,12 +16,13 @@ class Galerias extends Component {
             render = this.props.galeriasUsuario.map(g => <GaleriaMin {...this.props} galeria={g} key={g.id} />);
         }else if(match.params.id){
             const viewGaleria = this.props.galeriasUsuario.filter( g => g._id === match.params.id)[0];
-            render = <GaleriaView {...this.props } galeria={viewGaleria}/>
+            render = <GaleriaView {...this.props } galeria={viewGaleria} />
         }
 
         return (
             <React.Fragment>
                 <div className="row">
+                    {(this.props.galeriasUsuario.length === 0) && <h3>Sin galerias creadas</h3>}
                     {render}
                 </div>
                 { (location.pathname === galeriasRuta) &&             

@@ -1,13 +1,6 @@
 import React,{ Component } from 'react';
-const minDiv = {
-    height: '250px',
-    padding: '5px'
-}
-const imgStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover'
-}
+import '../assets/css/ImagenDiv.css';
+
 export default class ImagenDiv extends Component{
     componentDidMount(){
         window.i_divs = document.querySelectorAll('.materialboxed');
@@ -15,9 +8,9 @@ export default class ImagenDiv extends Component{
     }
     
     render(){
-        return this.props.imagenes.map( i => (
-            <div className="col s6 m4 l2" style={minDiv} >
-                <img className="center-align materialboxed" src={i.ruta} style={imgStyle}/>
+        return this.props.imagenes.map( (i, idx) => (
+            <div className="col s6 m4 l2 min_image_container" key={'img_'+idx}>
+                <img className="center-align materialboxed" src={i.ruta}/>
             </div>
         ));
     }

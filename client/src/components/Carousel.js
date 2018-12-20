@@ -45,7 +45,7 @@ export default class Carousel extends Component{
             <React.Fragment>
                 <div className="carousel carousel-slider">
                     { this.props.imagenes && this.props.imagenes.map((el, idx) => (
-                        <a className="carousel-item" href={'#'+idx} ><img src={el.ruta} /></a>
+                        <div className="carousel-item img_presentacion_container" ><img className="img_presentacion" src={el.ruta} /></div>
                     )) }
                 </div>
                 <button className="waves-effect waves-light btn right"onClick={this.manejaPantallaCompleta}>
