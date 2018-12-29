@@ -2,7 +2,7 @@ import React, { Component, Fragment} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchGaleriasUsuario, setGaleriaActivaUsuario, eliminarGaleria } from '../actions';
-import GaleriaMin from './GaleriaMin';
+import GaleriaCard from './GaleriaCard';
 import GaleriaView from './GaleriaView';
 import Axios from 'axios';
 
@@ -13,7 +13,7 @@ class Galerias extends Component {
         const { location, match } = this.props;
         let render = [];
         if(location.pathname === galeriasRuta){
-            render = this.props.galeriasUsuario.map(g => <GaleriaMin {...this.props} galeria={g} key={g._id} />);
+            render = this.props.galeriasUsuario.map(g => <GaleriaCard {...this.props} galeria={g} key={g._id} />);
         }else if(match.params.id){
             const viewGaleria = this.props.galeriasUsuario.filter( g => g._id === match.params.id)[0];
             render = <GaleriaView {...this.props } galeria={viewGaleria} key="galeriaView"/>

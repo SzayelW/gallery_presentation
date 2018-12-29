@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
-class GaleriaMin extends Component {
+class GaleriaCard extends Component {
 
     miniaturaGaleria = () => {
         const { galeria } = this.props;
@@ -42,4 +42,4 @@ class GaleriaMin extends Component {
         );
     }
 }
-export default  GaleriaMin;
+export default  GaleriaCard;
