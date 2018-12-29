@@ -7,9 +7,9 @@ class GaleriaMin extends Component {
         const { galeria } = this.props;
         
         return (
-            <div className="card small sticky-action">
+            <div className="card small sticky-action" key={galeria._id} >
                 <div className="card-image waves-effect waves-block waves-light">
-                    <img className="activator responsive-img" src={galeria.imagenes[0].ruta} />
+                    <img className="activator responsive-img" src={ (galeria.imagenes.length > 0)  ? galeria.imagenes[0].ruta : ''} />
                 </div>
                 <div className="card-content">
                     <span className="card-title activator grey-text text-darken-4">{galeria.nombre}<i className="material-icons right">more_vert</i></span>

@@ -13,10 +13,10 @@ class Galerias extends Component {
         const { location, match } = this.props;
         let render = [];
         if(location.pathname === galeriasRuta){
-            render = this.props.galeriasUsuario.map(g => <GaleriaMin {...this.props} galeria={g} key={g.id} />);
+            render = this.props.galeriasUsuario.map(g => <GaleriaMin {...this.props} galeria={g} key={g._id} />);
         }else if(match.params.id){
             const viewGaleria = this.props.galeriasUsuario.filter( g => g._id === match.params.id)[0];
-            render = <GaleriaView {...this.props } galeria={viewGaleria} />
+            render = <GaleriaView {...this.props } galeria={viewGaleria} key="galeriaView"/>
         }
 
         return (

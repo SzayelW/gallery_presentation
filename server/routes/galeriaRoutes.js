@@ -16,16 +16,15 @@ const storage = multer.diskStorage({
         }
     },
     filename: function(req, file, cb){
-        cb(null, Date.now() + '_' + file.originalname);
+        cb(null, Date.now() + '_' + file.originalname.replace(/\s/g, "_"));
     }
 });
 const upload = multer({ storage: storage});
 
 module.exports = (app) =>{
     
-    app.post('/api/galeria/nuevo', upload.array('imagenes'), async (req, res)=> {
+    app.post('/api/galeria/nuevo', upload.array('imagenesDZ'), async (req, res)=> {
         const { nombre, descripcion} = req.body;
-        
         let imagenes = [];
         if(req.files){
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));

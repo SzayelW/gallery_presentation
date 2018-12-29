@@ -1,29 +1,10 @@
 import Dropzone from 'react-dropzone';
 import React, {Component} from 'react';
 
-const baseStyle = {
-    width: 200,
-    height: 200,
-    borderWidth: 2,
-    borderColor: '#666',
-    borderStyle: 'dashed',
-    borderRadius: 5
-  };
   const activeStyle = {
     borderStyle: 'solid',
     borderColor: '#6c6',
     backgroundColor: '#eee'
-  };
-  const rejectStyle = {
-    borderStyle: 'solid',
-    borderColor: '#c66',
-    backgroundColor: '#eee'
-  };
-  const thumbsContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 16
   };
   
   const thumb = {
@@ -58,51 +39,43 @@ class ImageUpload extends Component{
 
     handleOnDrop = (files) => {
         this.setState({
-            files: files.map(file => Object.assign(file, {
+            files: [...this.state.files, ...files.map(file => Object.assign(file, {
               preview: URL.createObjectURL(file)
-            }))
+            }))]
           });
+        this.props.addFiles(files);
     }
 
     componentWillUnmount() {
-        // Make sure to revoke the data uris to avoid memory leaks
         this.state.files.forEach(file => URL.revokeObjectURL(file.preview))
       }
 
     render(){
-        const {files} = this.state;
-
-        const thumbs = files.map(file => (
-        <div style={thumb} key={file.name}>
+        const thumbs = this.state.files.map(file => (
+        <div style={thumb} key={ file.name+Date.now() }>
             <div style={thumbInner}>
-            <img
-                src={file.preview}
-                style={img}
-            />
+              <img src={file.preview} style={img} />
             </div>
         </div>
         ));
-
+          
         return (
             <React.Fragment>
-            <Dropzone {...this.props.imagenProps} accept="image/*" onDrop={this.handleOnDrop} >
-                 {({ getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject, acceptedFiles, rejectedFiles }) => {
-                    let styles =  {...activeStyle};//isDragActive ? {...styles, ...activeStyle} : ( isDragReject ? {...styles, ...rejectStyle} : {...baseStyle} );
-                        
-                    return (
-                    <div {...getRootProps()} style={styles} >
-                        <input {...getInputProps()} />
-                        <div>
-                            {isDragAccept ? 'Drop' : 'Drag'} files here...
+              <Dropzone {...this.props.imagenProps} multiple={true} accept="image/*" customRef="kikik" onDrop={this.handleOnDrop} >
+                  {
+                    ({ getRootProps, getInputProps, isDragReject}) => 
+                      (
+                        <div {...getRootProps()} style={activeStyle} >
+                            <input {...getInputProps()} />
+                            <div>
+                                <h3>Drag files here...</h3>
+                                {thumbs}
+                            </div>
+                            { isDragReject && <div>Unsupported file type...</div> }
                         </div>
-                        { isDragReject && <div>Unsupported file type...</div> }
-                    </div>
-                    )
-                }}
-            </Dropzone>
-              <aside style={thumbsContainer}>
-                {thumbs}
-              </aside>
+                      )
+                  }
+              </Dropzone>
             </React.Fragment>
         )
     }
