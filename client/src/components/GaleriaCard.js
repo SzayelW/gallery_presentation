@@ -17,6 +17,7 @@ class GaleriaCard extends Component {
                 <div className="card-reveal">
                     <span className="card-title grey-text text-darken-4">{galeria.nombre}<i className="material-icons right">close</i></span>
                     <p>Total de imagenes: {galeria.imagenes.length}</p>
+                    <p>{galeria.descripcion}</p>
                 </div>
                 <div className="card-action">
                     <div>
@@ -27,6 +28,7 @@ class GaleriaCard extends Component {
                     </div>
                     <div>
                         <Link to={ `/mis_galerias/${galeria._id}` }>Ver galeria</Link>
+                        <Link to={ `/mis_galerias/editar/${galeria._id}` }>Editar</Link>
                         <button className="btn waves-effect waves-light red  btn-small" onClick={ () => this.props.eliminarGaleria(galeria._id)}><i className="large material-icons">delete</i></button>
                     </div>
                 </div>

@@ -27,6 +27,7 @@ class App extends React.Component{
                     <Route path="/login" component={LoginForm} />
                     <Route path="/usuarios" component={Usuarios} />
                     <Route exact path="/mis_galerias/nuevo" component={GaleriaForm} />
+                    <Route path="/mis_galerias/editar/:id" component={GaleriaForm} />
                     <Route path="/mis_galerias/:id" component={Galerias} />
                     <Route path="/mis_galerias" component={Galerias} />
                     <Route exact path="/" component={Home} />

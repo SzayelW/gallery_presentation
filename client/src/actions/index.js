@@ -3,6 +3,7 @@ export const FETCH_USER = 'FETCH_USER';
 export const FETCH_GALERIAS_USER = 'FETCH_GALERIAS_USER';
 export const NUEVA_GALERIA = 'NUEVA_GALERIA';
 export const ELIMINA_GALERIA = 'ELIMINA_GALERIA';
+export const EDITA_GALERIA = 'EDITA_GALERIA';
 
 export const fecthUser = () => async dispatch => {
     const user = await axios.get('/api/current_user');
@@ -27,6 +28,12 @@ export const postNuevaGaleriaUsuario = (datos, history) => async dispatch => {
     const galeriaNueva = await axios.post('/api/galeria/nuevo', datos);
     history.push('/mis_galerias');
     dispatch({ type: NUEVA_GALERIA , payload: galeriaNueva.data});
+}
+
+export const updateGaleriaUsuario = (datos, history) => async dispatch => {
+    const galeria = await axios.put('/api/galeria/editar', datos);
+    history.push('/mis_galerias');
+    dispatch({ type: EDITA_GALERIA , payload: galeria.data});
 }
 
 export const setGaleriaActivaUsuario = (galeriaId, activa) => async dispatch => {

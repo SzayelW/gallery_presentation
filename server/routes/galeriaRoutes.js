@@ -31,14 +31,26 @@ module.exports = (app) =>{
     app.post('/api/galeria/nuevo', upload.array('imagenesDZ'), async (req, res)=> {
         const { nombre, descripcion} = req.body;
         let imagenes = [];
+        
         if(req.files){
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
-        }else{
-            res.send('sin archivo');
         }
+
         const galeriaNueva = await new GaleriasModel({ nombre, descripcion, usuarioId: req.user.id, imagenes }).save();
         res.send(galeriaNueva);
     });
+
+    app.put('/api/galeria/editar', upload.array('imagenesDZ'), async(req, res) => {
+        const { _id, nombre, descripcion} = req.body;
+        let imagenes = [];
+        
+        if(req.files){
+            imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
+        }
+
+        const galeriaEditada = await GaleriasModel.findOneAndUpdate({ _id}, {$set: {nombre, descripcion}}, {new: true}).exec();
+        res.send(galeriaEditada);
+    })
 
     app.get('/galerias_usuario', async (req, res) => {
        const galeriasUsuario = await GaleriasModel.find({usuarioId: req.user.id});
