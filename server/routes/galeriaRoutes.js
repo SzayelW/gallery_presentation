@@ -19,7 +19,12 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + '_' + file.originalname.replace(/\s/g, "_"));
     }
 });
-const upload = multer({ storage: storage});
+
+const fileFilter = (req, file, cb)=>{
+    cb(null, file.mimetype.startsWith('image/'));
+}
+
+const upload = multer({ storage, fileFilter});
 
 module.exports = (app) =>{
     
