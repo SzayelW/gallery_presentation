@@ -41,14 +41,30 @@ module.exports = (app) =>{
     });
 
     app.put('/api/galeria/editar', upload.array('imagenesDZ'), async(req, res) => {
-        const { _id, nombre, descripcion} = req.body;
+        let { _id, nombre, descripcion, imagenesEliminadas} = req.body;
         let imagenes = [];
         
         if(req.files){
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
         }
-
-        const galeriaEditada = await GaleriasModel.findOneAndUpdate({ _id}, {$set: {nombre, descripcion}}, {new: true}).exec();
+        if(imagenesEliminadas){
+            imagenesEliminadas = JSON.parse(imagenesEliminadas);
+            imagenesEliminadas.forEach(async img => {
+                await GaleriasModel.findByIdAndUpdate({_id}, {$pull: {imagenes: { _id: img._id } } }).exec();
+                fs.unlink(img.ruta, (err) => {
+                    if (err) throw err;
+                    console.log(img.ruta + ' fue eliminado');
+                  });                
+            });
+        }
+        const galeriaEditada = await GaleriasModel.findOneAndUpdate(
+            { _id},
+            {
+                $set: {nombre, descripcion},
+                $push: {imagenes}
+            },
+            {new: true})
+            .exec();
         res.send(galeriaEditada);
     })
 

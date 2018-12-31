@@ -5,8 +5,11 @@ import ImageUpload from './ImageUpload';
 
 class GaleriaForm extends Component {
     state = {
-        uploading: false,
-        files: []
+        saving: false,
+        files: [],
+        update: false,
+        galeria: {_id:null, nombre:'', descripcion:'', imagenes:[]},
+        imagenesEliminadas: []
     };
 
     addFiles = (files) => {
@@ -15,25 +18,56 @@ class GaleriaForm extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({uploading: true});
+        this.setState({saving: true});
         let form = new FormData(this.refs.galeriaForm);
         this.state.files.forEach(f => form.append('imagenesDZ', f));
-        if(this.props.match.params.id) this.props.updateGaleriaUsuario(form, this.props.history);
+        form.append('imagenesEliminadas', JSON.stringify(this.state.imagenesEliminadas));
+        if(this.state.update) this.props.updateGaleriaUsuario(form, this.props.history);
         else this.props.postNuevaGaleriaUsuario(form, this.props.history);           
     }
     
-    componentWillUnmount(){
-        this.setState({uploading: false});
+    handleEliminar = (e,imagen) => {
+        e.preventDefault();
+        this.setState((state) => ({imagenesEliminadas: [...state.imagenesEliminadas, imagen]}));
+    }
+
+    handleRevertir = (e,imagen) => {
+        e.preventDefault();
+        this.setState((state) => ({imagenesEliminadas: [...state.imagenesEliminadas.filter(i => i._id !== imagen._id)]}));
+    }
+
+    imagenesEdit = (imagenes) => {
+        return imagenes.map(img => {
+            const eliminado = this.state.imagenesEliminadas.some(i => i._id === img._id);
+            return (
+                <div key={img._id} className="col s4 m3 l2" >
+                    <div className="card">
+                        <div className="card-image" style={ {opacity: eliminado ? '0.5' : '1'}} >
+                            <img src={img.ruta} style={ {maxWidth:'100%', objectFit: 'scale-down'} } />
+                        </div>
+                        <div className="card-action">
+                            {!eliminado && <button className="waves-effect waves-light btn-small  red darken-2" onClick={(e) => this.handleEliminar(e,img) }>Eliminar</button>}
+                            {eliminado && <button className="waves-effect waves-light btn-small" onClick={(e) => this.handleRevertir(e,img) }>Revertir</button>}
+                        </div>
+                    </div>                
+                </div>
+            )
+        }
+        );
+    }
+
+    componentDidMount(){
+        const update = this.props.location.pathname.startsWith('/mis_galerias/editar/');
+        if(update){
+            const id = this.props.match.params.id;
+            const galeria = this.props.galeriasUsuario.filter(g => id == g._id)[0];
+            if(!galeria) return this.props.history.push('/');
+            this.setState( {galeria, update: true} );
+        }
     }
 
     render(){
-        const update = this.props.location.pathname.startsWith('/mis_galerias/editar/');
-        let galeria = {_id:null, nombre:'', descripcion:'', imagenes:[]};
-        if(update){
-            const id = this.props.match.params.id;
-            galeria = this.props.galeriasUsuario.filter(g => id == g._id)[0];
-            if(!galeria) return this.props.history.push('/');
-        }
+        const {galeria, update} = this.state;
 
         return (
             
@@ -52,6 +86,9 @@ class GaleriaForm extends Component {
                 </div>
                 <div>
                     <ImageUpload ref="imagenesDropRef" imagenProps={{name:'imagenesDrop'}} addFiles={this.addFiles}/>
+                </div>
+                <div className="row">
+                    { update && this.imagenesEdit(galeria.imagenes) }
                 </div>
                 <button className="waves-effect waves-light btn right" type="submit" style={ {marginTop: '5px'} }>
                     {update ? 'Actualizar': 'Guardar'}
