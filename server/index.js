@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
@@ -35,9 +36,13 @@ app.use(express.static(path.resolve("client","build")));
 app.get("*", (req, res) => {
     if(req.url.match('/uploads/users/')){
         const file = req.url.split('/').filter(r => r.trim()).reverse();
-        if(file.length >= 4) res.sendFile(path.resolve("uploads", "users", file[1], file[0] ));
+        let ruta = path.resolve("uploads", "users", file[1], file[0] );
+        if(file.length >= 4 && fs.existsSync(ruta)) res.sendFile(ruta);
         else res.status(404).send('Not found');
-    }else{
+    }else if(req.url.match('.js')){
+        res.sendFile(path.resolve("client", "build", "clientBundle.js"));
+    }
+    else{
         res.sendFile(path.resolve("client", "build", "index.html"));
     }
 });

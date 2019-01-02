@@ -64,7 +64,7 @@ class GaleriaForm extends Component {
         if(update){
             const id = this.props.match.params.id;
             const galeria = this.props.galeriasUsuario.filter(g => id == g._id)[0];
-            if(!galeria) return this.props.history.push('/');
+            if(!galeria) return this.props.history.push('/mis_galerias');
             this.setState( {galeria, update: true} );
         }
     }

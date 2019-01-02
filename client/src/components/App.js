@@ -19,21 +19,31 @@ class App extends React.Component{
     }
 
     render() {
+        if(!this.props.user){
+            return (
+                <BrowserRouter>
+                <React.Fragment>
+                    <Navbar />   
+                    <Route path="*" component={ LoginForm} />
+                </React.Fragment>
+                </BrowserRouter>
+            );
+        }
         return (
-        <BrowserRouter>
-            <React.Fragment>
-                <Navbar />
-                <Switch>
-                    <Route path="/login" component={LoginForm} />
-                    <Route path="/usuarios" component={Usuarios} />
-                    <Route exact path="/mis_galerias/nuevo" component={GaleriaForm} />
-                    <Route path="/mis_galerias/editar/:id" component={GaleriaForm} />
-                    <Route path="/mis_galerias/:id" component={Galerias} />
-                    <Route path="/mis_galerias" component={Galerias} />
-                    <Route exact path="/" component={this.props.user ? Home : LoginForm} />
-                </Switch>
-            </ React.Fragment>
-        </BrowserRouter>
+            <BrowserRouter>
+                <React.Fragment>
+                    <Navbar />
+                    <Switch>
+                        <Route path="/login" component={LoginForm} />
+                        <Route path="/usuarios" component={Usuarios} />
+                        <Route exact path="/mis_galerias/nuevo" component={GaleriaForm} />
+                        <Route exact path="/mis_galerias/editar/:id" component={GaleriaForm} />
+                        <Route exact path="/mis_galerias/:id" component={Galerias} />
+                        <Route path="/mis_galerias" component={Galerias} />
+                        <Route exact path="/" component={Home} />
+                    </Switch>
+                </ React.Fragment>
+            </BrowserRouter>
         )
     }
 }

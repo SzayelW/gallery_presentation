@@ -35,6 +35,7 @@ const eliminaArchivosMayoresAPesoMaximo = (file) => {
     return file;
 };
 const eliminaImagen = (ruta) => {
+    if(!fs.existsSync(ruta)) return;
     fs.unlink(ruta, (err) => {
         if (err) throw err;
         console.log(ruta + ' fue eliminado');
@@ -109,7 +110,6 @@ module.exports = (app) =>{
             await GaleriasModel.findByIdAndDelete(req.body.galeriaId, (err, doc)=>{
                 if(!err) return res.send(doc);
             }).exec();
-            res.send(galeria);
         }catch(e){
             console.log(e);
         }

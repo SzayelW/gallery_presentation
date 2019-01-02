@@ -9,3 +9,8 @@
 .carousel:fullscreen .img_presentacion{
     object-fit: contain;
 }
+
+input::placeholder{
+    opacity: 1;
+    color: #837e7e;
+}

@@ -23,13 +23,13 @@ class LoginForm extends React.Component{
                     <div className="row">                  
                         <div className="col offset-s1 s10">
                             <label>Username</label>
-                            <input type="text" ref="username" key={111} name="username"/>
+                            <input type="text" ref="username" key={111} name="username" placeholder="demo" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col offset-s1 s10">
                             <label >Password</label>
-                            <input type="password" ref="password" key={211} name="password"/>
+                            <input type="password" ref="password" placeholder="demo" key={211} name="password"/>
                         </div>
                     </div>
                     <button className="btn right" type="submit">Submit</button>

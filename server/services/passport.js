@@ -15,17 +15,14 @@ passport.serializeUser((user, done) => {
 
 passport.use(new LocalStrategy(
     async function(username, password, done) {
-      /*User.findOne({ username: username }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        if (!user.verifyPassword(password)) { return done(null, false); }
-        return done(null, user);
-      });*/
-
-      let existingUser = await Usuarios.findOne({ username: username });
+      if(!username.trim()) return done(null, false);
+      
+      let existingUser = await Usuarios.findOne({ username: username.toLowerCase() });
       if (!existingUser) {
         existingUser = await new Usuarios({ username, password }).save();
       }
-      return done(null, existingUser);
+
+      if(existingUser.password === password) return done(null, existingUser);
+      else return done(null, false); 
     }
   ));
