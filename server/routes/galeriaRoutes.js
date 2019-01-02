@@ -25,6 +25,20 @@ const fileFilter = (req, file, cb)=>{
 }
 
 const upload = multer({ storage, fileFilter});
+const eliminaArchivosMayoresAPesoMaximo = (file) => {
+    const pesoMaximo = 0.5*1024*1024;
+    if(file.size > pesoMaximo){
+        eliminaImagen(file.path);
+        return null;
+    } 
+    return file;
+};
+const eliminaImagen = (ruta) => {
+    fs.unlink(ruta, (err) => {
+        if (err) throw err;
+        console.log(ruta + ' fue eliminado');
+      });
+}
 
 module.exports = (app) =>{
     
@@ -33,6 +47,7 @@ module.exports = (app) =>{
         let imagenes = [];
         
         if(req.files){
+            req.files = req.files.map(eliminaArchivosMayoresAPesoMaximo).filter( f => f !== null);
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
         }
 
@@ -45,16 +60,14 @@ module.exports = (app) =>{
         let imagenes = [];
         
         if(req.files){
+            req.files = req.files.map(eliminaArchivosMayoresAPesoMaximo).filter( f => f !== null);
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
         }
         if(imagenesEliminadas){
             imagenesEliminadas = JSON.parse(imagenesEliminadas);
             imagenesEliminadas.forEach(async img => {
                 await GaleriasModel.findByIdAndUpdate({_id}, {$pull: {imagenes: { _id: img._id } } }).exec();
-                fs.unlink(img.ruta, (err) => {
-                    if (err) throw err;
-                    console.log(img.ruta + ' fue eliminado');
-                  });                
+                eliminaImagen(img.ruta);
             });
         }
         const galeriaEditada = await GaleriasModel.findOneAndUpdate(
@@ -81,20 +94,24 @@ module.exports = (app) =>{
                 await GaleriasModel.findOneAndUpdate({usuarioId: req.user.id, activa: true},{$set: {activa: false}}).exec();
             }
             galeriaActiva = await GaleriasModel.findByIdAndUpdate(galeriaId, { $set: {activa: activa} }, {new: true}).exec();
+            res.send(galeriaActiva);
         }catch(e){
             console.log(e);
-        }
-        res.send(galeriaActiva);
+        }       
     });
 
     app.delete('/galerias_usuario/eliminar', async (req, res) => {
         try{
+            const galeria = await GaleriasModel.findById(req.body.galeriaId);
+            if(galeria.imagenes){
+                galeria.imagenes.forEach( i => eliminaImagen(i.ruta));
+            }
             await GaleriasModel.findByIdAndDelete(req.body.galeriaId, (err, doc)=>{
                 if(!err) return res.send(doc);
             }).exec();
+            res.send(galeria);
         }catch(e){
             console.log(e);
         }
-        res.send(null);
     });
 }

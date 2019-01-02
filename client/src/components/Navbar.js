@@ -3,6 +3,10 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class Navbar extends Component {
+    componentDidMount(){
+        var elems = document.querySelectorAll('.sidenav');
+        window.instances = M.Sidenav.init(elems, {draggable: true});
+    }
 
     render(){
         let menu = <li><NavLink to="/login">Iniciar Sesión</NavLink></li>;
@@ -14,14 +18,21 @@ class Navbar extends Component {
             ];
         }
         return (          
+            <React.Fragment>
             <nav>
                 <div className="nav-wrapper">
+                    <a href="#" data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
                     <NavLink to="/" className="brand-logo">Galeria</NavLink>
                     <ul id="nav-mobile" className="right hide-on-med-and-down">
                         { menu }
                     </ul>
-                </div>
+                </div>                
             </nav>
+            <ul id="slide-out" className="sidenav">
+                { menu }
+            </ul>
+            
+            </React.Fragment>
         )
     }
 }

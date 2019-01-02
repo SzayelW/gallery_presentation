@@ -8,7 +8,7 @@ class GaleriaForm extends Component {
         saving: false,
         files: [],
         update: false,
-        galeria: {_id:null, nombre:'', descripcion:'', imagenes:[]},
+        galeria: {_id:'', nombre:'', descripcion:'', imagenes:[]},
         imagenesEliminadas: []
     };
 
@@ -66,6 +66,14 @@ class GaleriaForm extends Component {
         }
     }
 
+    handleTextarea = () =>{
+        this.setState( (state) => {
+            const {galeria} = state;
+            galeria.descripcion = this.refs.descripcion.value;
+            return {...state, galeria};
+        });
+    }
+
     render(){
         const {galeria, update} = this.state;
 
@@ -82,7 +90,7 @@ class GaleriaForm extends Component {
                 </div>
                 <div>
                     <label htmlFor="descripcion">Descripción</label>
-                    <textarea defaultValue={galeria.descripcion} name="descripcion" key="descripcion" ref="descripcion" className="materialize-textarea" cols="30" rows="10"></textarea>
+                    <textarea value={galeria.descripcion} onChange={this.handleTextarea} name="descripcion" key="descripcion" ref="descripcion" className="materialize-textarea" cols="30" rows="10"></textarea>
                 </div>
                 <div>
                     <ImageUpload ref="imagenesDropRef" imagenProps={{name:'imagenesDrop'}} addFiles={this.addFiles}/>

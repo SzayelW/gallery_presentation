@@ -61,14 +61,15 @@ class ImageUpload extends Component{
           
         return (
             <React.Fragment>
-              <Dropzone {...this.props.imagenProps} multiple={true} accept="image/*" customRef="kikik" onDrop={this.handleOnDrop} >
+              <Dropzone {...this.props.imagenProps} multiple={true} accept="image/*" maxSize={0.5*1024*1024} onDrop={this.handleOnDrop} >
                   {
                     ({ getRootProps, getInputProps, isDragReject}) => 
                       (
                         <div {...getRootProps()} style={activeStyle} >
                             <input {...getInputProps()} />
                             <div>
-                                <h3>Drag files here...</h3>
+                                <h4>Arrastra archivos aquí...</h4>
+                                <p>Tamaño máximo por imagen: 500 kb</p>
                                 {thumbs}
                             </div>
                             { isDragReject && <div>Unsupported file type...</div> }
