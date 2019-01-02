@@ -25,6 +25,7 @@ const fileFilter = (req, file, cb)=>{
 }
 
 const upload = multer({ storage, fileFilter});
+
 const eliminaArchivosMayoresAPesoMaximo = (file) => {
     const pesoMaximo = 0.5*1024*1024;
     if(file.size > pesoMaximo){
@@ -45,8 +46,7 @@ module.exports = (app) =>{
     app.post('/api/galeria/nuevo', upload.array('imagenesDZ'), async (req, res)=> {
         const { nombre, descripcion} = req.body;
         let imagenes = [];
-        
-        if(req.files){
+        if(req.files){            
             req.files = req.files.map(eliminaArchivosMayoresAPesoMaximo).filter( f => f !== null);
             imagenes = req.files.map(f => ({ruta: f.destination + f.filename, archivo: true}));
         }

@@ -15,11 +15,14 @@ class GaleriaForm extends Component {
     addFiles = (files) => {
         this.setState({files: [...this.state.files, ...files]});
     }
-
+    
     handleSubmit = (e) => {
         e.preventDefault();
+        if(!this.refs.nombre.value.trim()) return;
         this.setState({saving: true});
+        
         let form = new FormData(this.refs.galeriaForm);
+        form.delete('imagenesDrop');
         this.state.files.forEach(f => form.append('imagenesDZ', f));
         form.append('imagenesEliminadas', JSON.stringify(this.state.imagenesEliminadas));
         if(this.state.update) this.props.updateGaleriaUsuario(form, this.props.history);

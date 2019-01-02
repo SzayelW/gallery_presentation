@@ -12,11 +12,12 @@ export const fecthUser = () => async dispatch => {
 
 export const login = (datos, history, next) => async dispatch => {
     const user = await axios.post('/api/login', datos);
+    
+    dispatch({ type: FETCH_USER, payload: user.data});
     if(user){
         history.push("/");
-    }
-    dispatch({ type: FETCH_USER, payload: user.data});
-    next();
+        next();
+    }    
 }
 
 export const fetchGaleriasUsuario = () => async dispatch => {

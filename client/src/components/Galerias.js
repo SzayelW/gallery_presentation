@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { fetchGaleriasUsuario, setGaleriaActivaUsuario, eliminarGaleria } from '../actions';
 import GaleriaCard from './GaleriaCard';
 import GaleriaView from './GaleriaView';
-import Axios from 'axios';
 
 class Galerias extends Component {
 

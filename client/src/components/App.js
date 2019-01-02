@@ -30,13 +30,15 @@ class App extends React.Component{
                     <Route path="/mis_galerias/editar/:id" component={GaleriaForm} />
                     <Route path="/mis_galerias/:id" component={Galerias} />
                     <Route path="/mis_galerias" component={Galerias} />
-                    <Route exact path="/" component={Home} />
+                    <Route exact path="/" component={this.props.user ? Home : LoginForm} />
                 </Switch>
             </ React.Fragment>
         </BrowserRouter>
         )
     }
 }
-
-export default connect(null, {fecthUser, fetchGaleriasUsuario})(App);
+function mapStateToProps({user}) {
+    return {user};
+}
+export default connect(mapStateToProps, {fecthUser, fetchGaleriasUsuario})(App);
 
